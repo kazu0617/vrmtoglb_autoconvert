@@ -4,9 +4,13 @@ Blenderだけ入れてればOKにした
   
 Blenderはversion3.0以降でのみ動作します(付属するblendファイルの関係上)  
 
+# ダウンロード
+1. [ここのリンク](https://github.com/kazu0617/vrmtoglb_autoconvert/releases/latest)をクリックする
+2. blender-checked.zip をダウンロードする
+
 # 使い方
 1. Blenderをインストールする
-2. convert.batにvrmファイルをD&Dする
+2. convert.batにvrmファイルをD&Dする -> vrmファイルがある場所を確認して、正常に変換できている場合はglbとテクスチャのフォルダが出力される
 3. glbが出ない場合はlicense-check.batにvrmファイルをD&Dする
 4. license-check後、出来る人は_convert_manual.batでvrmをD&D後、[N]キー -> VRM -> VRM ** Meta -> インポート時に怒られた問題を修正 -> 修正後 ファイル -> エクスポート -> VRM
 
