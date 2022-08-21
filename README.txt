@@ -24,3 +24,5 @@ Neos: lill
 Twitter: @Gameofthebest
 Neos: kazu
 
+# ライセンスについて
+一応MITで。そのうちMPLにするかも。
