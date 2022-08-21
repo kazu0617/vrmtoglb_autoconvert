@@ -32,7 +32,7 @@ curl -L -o "%~dp0Blender.msi" https://mirrors.aliyun.com/blender/release/Blender
 Blender.msi
 goto first
 )
-set blender="%blender%blender.exe"
+set blender="%blender%\blender.exe"
 :cycle
 
 set VRM=%1
