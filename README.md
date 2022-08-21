@@ -1,8 +1,8 @@
 # これなに
-VRMをNeosVRでインポートしやすいように変換する
+VRMをNeosVRでインポートしやすいように変換する  
 Blenderだけ入れてればOKにした
-
-Blenderはversion3.0以降でのみ動作します(付属するblendファイルの関係上)
+  
+Blenderはversion3.0以降でのみ動作します(付属するblendファイルの関係上)  
 
 # 使い方
 1. Blenderをインストールする
@@ -16,13 +16,13 @@ Blenderはversion3.0以降でのみ動作します(付属するblendファイル
 - 複数ファイルも動く、と思う
 - エラーチェックできてないので問題あれば下の二人まで
 
-# 連絡先
-Twitter: @lill_azk
-Neos: lill
+# 連絡先(Pythonスクリプト)
+- Twitter: @lill_azk  
+- Neos: lill
 
-# 改変連絡先
-Twitter: @Gameofthebest
-Neos: kazu
+# 改変連絡先(Batchスクリプト)
+- Twitter: @Gameofthebest
+- Neos: kazu
 
 # ライセンスについて
 一応MITで。そのうちMPLにするかも。
