@@ -1,4 +1,4 @@
-@echo off
+@echo on
 chcp 65001
 setlocal
 :first
@@ -32,7 +32,9 @@ curl -L -o "%~dp0Blender.msi" https://mirrors.aliyun.com/blender/release/Blender
 Blender.msi
 goto first
 )
-set blender="%blender%blender.exe"
+
+for /f "usebackq delims=" %%A in (`powershell -command "Join-Path %blender% blender.exe"`) do set blender=%%A
+set blender="%blender%"
 :cycle
 
 set VRM=%1
