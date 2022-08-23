@@ -22,6 +22,7 @@ echo ===Enviroment Checker. if alert to send from Dev, send it!===
 
 timeout 3
 
+
 echo "VRMアドオンの最新版を取得中…"
 curl -L -o "%~dp0VRM_Addon_for_Blender-release.zip" https://github.com/saturday06/VRM_Addon_for_Blender/raw/release-archive/VRM_Addon_for_Blender-release.zip
 
@@ -31,10 +32,10 @@ curl -L -o "%~dp0Blender.msi" https://mirrors.aliyun.com/blender/release/Blender
 Blender.msi
 goto first
 )
+set blender='%blender%\'
 
 for /f "usebackq delims=" %%A in (`powershell -command "Join-Path %blender% blender.exe"`) do set blender=%%A
 set blender="%blender%"
-
 set VRM=%1
 set OUTPUT="%~1-converted.glb"
 
