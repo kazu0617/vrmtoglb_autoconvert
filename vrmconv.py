@@ -96,6 +96,14 @@ def rename_bones():
     if not chest == None and not upper_chest == None:
         upper_chest.name = '<NoIK>' + upper_chest.name
 
+def fix_cecil_eyes():
+    if 'CMeMatome' in bpy.data.objects:
+        obj = bpy.data.objects['CMeMatome']
+        if 'Hitomi_L.001' in obj.vertex_groups:
+            obj.vertex_groups['Hitomi_L.001'].name = 'LeftEye'
+        if 'Hitomi_R.001' in obj.vertex_groups:
+            obj.vertex_groups['Hitomi_R.001'].name = 'RightEye'
+
 if '__main__' == __name__:
     parser = argparse.ArgumentParser()
     parser.add_argument('--input', required=True)
@@ -118,6 +126,7 @@ if '__main__' == __name__:
     rename_bones()
     remove_root_bone()
     mtoon_to_bsdf()
+    fix_cecil_eyes()
 
     if fbx:
         bpy.ops.export_scene.fbx(filepath=output, embed_textures=True, path_mode='COPY', object_types={'ARMATURE', 'MESH'}, global_scale=0.01)
