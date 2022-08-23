@@ -60,8 +60,24 @@ def remove_trashes():
     if 'secondary' in bpy.data.objects:
         bpy.data.objects.remove(bpy.data.objects['secondary'])
 
+def remove_root_bone():
+    bpy.context.view_layer.objects.active = bpy.data.objects[bpy.data.armatures[0].name]
+    bpy.ops.object.mode_set(mode='EDIT')
+    armature = bpy.data.armatures[0]
+    if 'Root' not in armature.bones:
+        return
+    root = armature.bones['Root']
+    if root.parent != None:
+        return
+    if armature.edit_bones[0].name == 'Root':
+        for child in root.children:
+            print(child.name)
+            armature.edit_bones[child.name].parent = None
+    armature.edit_bones.remove(armature.edit_bones['Root'])
+    bpy.ops.object.mode_set(mode='OBJECT')
+
 def rename_bones():
-    prefixes = ['J_Adj_', 'J_Bip_C_', 'J_Bip_', 'J_Sec_C_', 'J_Sec']
+    prefixes = ['J_Adj_', 'J_Bip_C_', 'J_Bip_', 'J_Sec_C_', 'J_Sec_']
     bones = bpy.data.armatures[0].bones
     
     chest = None
@@ -100,6 +116,7 @@ if '__main__' == __name__:
 
     remove_trashes()
     rename_bones()
+    remove_root_bone()
     mtoon_to_bsdf()
 
     if fbx:

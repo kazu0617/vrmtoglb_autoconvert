@@ -32,7 +32,7 @@ curl -L -o "%~dp0Blender.msi" https://mirrors.aliyun.com/blender/release/Blender
 Blender.msi
 goto first
 )
-set blender='%blender%\'
+set blender='%blender%'
 
 for /f "usebackq delims=" %%A in (`powershell -command "Join-Path %blender% blender.exe"`) do set blender=%%A
 set blender="%blender%"
