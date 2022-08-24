@@ -96,9 +96,18 @@ def rename_bones():
     if not chest == None and not upper_chest == None:
         upper_chest.name = '<NoIK>' + upper_chest.name
 
-def fix_cecil_eyes():
+def get_cecil_type():
     if 'CMeMatome' in bpy.data.objects:
-        obj = bpy.data.objects['CMeMatome']
+        return 'CMeMatome' # New Cecil Henshin formats (Pokudeki/Avatar Shop)
+    if 'CMe' in bpy.data.objects:
+        return 'CMe' # Legacy Cecil Henshin formats (Cecil Henshin)
+    else:
+        return ""
+
+def fix_cecil_eyes():
+    cecil_type = get_cecil_type()
+    if cecil_type != "":
+        obj = bpy.data.objects[cecil_type]
         if 'Hitomi_L.001' in obj.vertex_groups:
             obj.vertex_groups['Hitomi_L.001'].name = 'LeftEye'
         if 'Hitomi_R.001' in obj.vertex_groups:
