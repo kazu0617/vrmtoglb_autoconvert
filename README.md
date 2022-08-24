@@ -1,6 +1,6 @@
 # これなに
 VRMをNeosVRでインポートしやすいように変換するツールです。  
-Blenderに VRM_Addon_for_Blender を自動で導入し、いい感じに値を調整しGLBで出力します。
+Blenderに [VRM_Addon_for_Blender](https://vrm-addon-for-blender.info/) (iCyP様, saturday06様制作)を自動で導入し、いい感じに値を調整しGLBで出力します。
 
 
 #前提ツール
