@@ -3,7 +3,7 @@ VRMをNeosVRでインポートしやすいように変換するツールです�
 Blenderに [VRM_Addon_for_Blender](https://vrm-addon-for-blender.info/) (iCyP様, saturday06様制作)を自動で導入し、いい感じに値を調整しGLBで出力します。
 
 
-#前提ツール
+# 前提ツール
 Blenderだけ入れてればOK。  
 Blenderはversion3.0以降でのみ動作します(厳密には2.93 LTSまで動作確認していますが、今から導入する場合は3系をお勧めします)  
 もしまだ入れていない方はこちらからどうぞ: https://www.blender.org/download/release/Blender3.2/blender-3.2.2-windows-x64.msi/
