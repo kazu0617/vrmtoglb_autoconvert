@@ -9,6 +9,8 @@ for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\
 for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).InstallLocation"`) do set blender=%%A
 set blender=%blender:"=%
 
+if defined BLENDER_LOCATION_OVERRIDE (set blender=%BLENDER_LOCATION_OVERRIDE%)
+
 timeout 3
 
 echo "VRMアドオンの最新版を取得中…"
