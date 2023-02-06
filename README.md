@@ -13,8 +13,8 @@ Blenderはversion3.0以降でのみ動作します(厳密には2.93 LTSまで動
 
 ## ダウンロード
 
-1. [ここのリンク](https://github.com/kazu0617/vrmtoglb_autoconvert/releases/latest)をクリックする
-2. Source Code(zip) をダウンロードする
+1. [ここのリンク](https://github.com/kazu0617/vrmtoglb_autoconvert/archive/refs/heads/master.zip)をクリックする。
+2. zip形式でDLされるので適宜解凍してください。
 
 ## 使い方
 
