@@ -9,7 +9,7 @@ Blenderに [VRM_Addon_for_Blender](https://vrm-addon-for-blender.info/) (iCyP様
 
 Blenderだけ入れてればOK。  
 Blenderはversion3.0以降でのみ動作します(厳密には2.93 LTSまで動作確認していますが、今から導入する場合は3系をお勧めします)  
-もしまだ入れていない方はこちらからどうぞ: https://www.blender.org/download/release/Blender3.2/blender-3.2.2-windows-x64.msi/
+もしまだ入れていない方はこちらからどうぞ: [Blender公式サイト](https://www.blender.org/download/release/Blender3.4/blender-3.4.1-windows-x64.msi/)
 
 ## ダウンロード
 
