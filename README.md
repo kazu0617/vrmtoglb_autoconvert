@@ -1,8 +1,14 @@
 # VRM to GLB for Neos
 
+## 注意点
+
+NeosVRでインポートするためにこのツールにたどり着いた場合はまずWikiを確認してください。このツールを使う前にしてほしいことを一通り載せています。
+https://neosvrjp.memo.wiki/d/Avatar_Import_from_Unity
+
 ## これなに
 
-VRMをNeosVRでインポートしやすいように変換するツールです。  
+VRMをNeosVRでインポートしやすくするようにGLBへと変換するツールです。  
+NeosVR以外でも利用していただけます。
 Blenderに [VRM_Addon_for_Blender](https://vrm-addon-for-blender.info/) (iCyP様, saturday06様制作)を自動で導入し、いい感じに値を調整しGLBで出力します。
 
 ## 前提ツール
