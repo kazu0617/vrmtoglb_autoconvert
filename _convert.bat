@@ -32,7 +32,7 @@ curl -L -o "%~dp0VRM_Addon_for_Blender-release.zip" https://github.com/saturday0
 
 if "%blender%" == "" (
 echo "Blenderが検出できませんでした。インストーラをダウンロードし、インストールします"
-curl -L -o "%~dp0Blender.msi" https://mirrors.aliyun.com/blender/release/Blender3.2/blender-3.2.2-windows-x64.msi
+curl -L -o "%~dp0Blender.msi" https://mirrors.aliyun.com/blender/release/Blender3.4/blender-3.4.1-windows-x64.msi
 Blender.msi
 goto first
 )
@@ -54,8 +54,11 @@ echo ADDONFILE = "%~dp0VRM_Addon_for_Blender-release.zip"
 echo.
 echo.
 
-IF NOT DEFINED BLENDER goto error
+IF NOT DEFINED BLENDER goto error-blender
+IF NOT EXIST BLENDER goto error-blender
 IF NOT DEFINED VRM goto error-drop
+IF NOT EXIST VRM goto error-drop
+IF NOT EXIST ADDONFILE goto error-addon
 
 echo ===Convert Start===
 %BLENDER% "%~dp0empty.blend"^
@@ -117,15 +120,6 @@ echo "何かキーをクリックすると終了します"
 timeout 600
 goto end
 
-:error
-
-echo "Blenderを標準のインストール位置から変更しているか、そもそもインストールしていない可能性があります"
-echo "標準のインストール位置から変更している場合はkazuまで連絡お願いします"
-echo "インストールしていない場合はBlender3系をインストールお願いします"
-echo "何かキーをクリックすると終了します"
-pause
-goto end
-
 :license-check
 echo "ライセンス上問題のあるファイルでも強制的に読み込むことは可能です"
 echo "問題が発生した場合に自己責任となりますが、本当に変換しますか？"
@@ -153,8 +147,26 @@ echo "何かキーをクリックすると終了します"
 pause
 goto end
 
+:error-blender
+echo "Blenderを標準のインストール位置から変更しているか、そもそもインストールしていない可能性があります"
+echo "標準のインストール位置から変更している場合はblender.exeまでのパスが通っているか確認してください(フォルダ名まで検索した後は手動で処理しています)"
+echo "Blenderのインストール場所を手動で指定する場合は BLENDER_LOCATION_OVERRIDE 環境変数にblender.exeが入っているディレクトリを指定してください"
+echo "インストールしていない場合はBlender3.4以上をインストールお願いします"
+echo "何かキーをクリックすると終了します"
+pause
+goto end
+
 :error-drop
 echo "VRMファイルをドラッグ&ドロップで入れてください"
+echo "何かキーをクリックすると終了します"
+pause
+goto end
+
+:error-addon
+echo "アドオンのダウンロードに失敗しています"
+echo "パソコンの設定を確認の上、再度実行してください(失効証明書管理サーバが正常に機能していない際にこの問題が起きることがあります)"
+echo "もしくは、右のリンクから手動でダウンロードし、このbatがある階層にD&Dしてください: "
+echo "https://github.com/saturday06/VRM_Addon_for_Blender/raw/release-archive/VRM_Addon_for_Blender-release.zip"
 echo "何かキーをクリックすると終了します"
 pause
 :end

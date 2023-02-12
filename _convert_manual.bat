@@ -49,7 +49,10 @@ echo OUTPUT = %OUTPUT%
 echo ADDONFILE = "%~dp0VRM_Addon_for_Blender-release.zip"
 
 IF NOT DEFINED BLENDER goto error
+IF NOT EXIST BLENDER goto error
 IF NOT DEFINED VRM goto error-drop
+IF NOT EXIST VRM goto error-drop
+IF NOT EXIST ADDONFILE goto error-addon
 
 %BLENDER% "%~dp0empty.blend"^
  --python "%~dp0vrmconv.py"^
@@ -58,22 +61,27 @@ IF NOT DEFINED VRM goto error-drop
  --addonfile "%~dp0VRM_Addon_for_Blender-release.zip"
 rem --fbx True
 
-echo 変換が正常に完了しました(スクリプトでエラーが出てくる場合があります、その場合は連絡お願いします)
-timeout 600
-goto end
-
-:error
-
-echo Blenderを標準のインストール位置から変更しているか、そもそもインストールしていない可能性があります
-echo 標準のインストール位置から変更している場合はkazuまで連絡お願いします
-echo インストールしていない場合はBlender3系をインストールお願いします
-echo Blender3系のインストール先は「1.BlenderインストールURL」をクリックしてください
+:error-blender
+echo "Blenderを標準のインストール位置から変更しているか、そもそもインストールしていない可能性があります"
+echo "標準のインストール位置から変更している場合はblender.exeまでのパスが通っているか確認してください(フォルダ名まで検索した後は手動で処理しています)"
+echo "Blenderのインストール場所を手動で指定する場合は BLENDER_LOCATION_OVERRIDE 環境変数にblender.exeが入っているディレクトリを指定してください"
+echo "インストールしていない場合はBlender3.4以上をインストールお願いします"
+echo "何かキーをクリックすると終了します"
 pause
 goto end
 
 :error-drop
+echo "VRMファイルをドラッグ&ドロップで入れてください"
+echo "何かキーをクリックすると終了します"
+pause
+goto end
 
-echo VRMファイルをドラッグ&ドロップで入れてください
+:error-addon
+echo "アドオンのダウンロードに失敗しています"
+echo "パソコンの設定を確認の上、再度実行してください(失効証明書管理サーバが正常に機能していない際にこの問題が起きることがあります)"
+echo "もしくは、右のリンクから手動でダウンロードし、このbatがある階層にD&Dしてください: "
+echo "https://github.com/saturday06/VRM_Addon_for_Blender/raw/release-archive/VRM_Addon_for_Blender-release.zip"
+echo "何かキーをクリックすると終了します"
 pause
 :end
 
