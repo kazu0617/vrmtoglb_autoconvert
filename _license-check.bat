@@ -36,11 +36,11 @@ echo VRM = %VRM%
 echo OUTPUT = %OUTPUT%
 echo ADDONFILE = "%~dp0VRM_Addon_for_Blender-release.zip"
 
-IF NOT DEFINED BLENDER goto error
-IF NOT EXIST BLENDER goto error
+IF NOT DEFINED BLENDER goto error-blender
+IF NOT EXIST %BLENDER% goto error-blender
 IF NOT DEFINED VRM goto error-drop
-IF NOT EXIST VRM goto error-drop
-IF NOT EXIST ADDONFILE goto error-addon
+IF NOT EXIST %VRM% goto error-drop
+IF NOT EXIST "%~dp0VRM_Addon_for_Blender-release.zip" goto error-addon
 
 %BLENDER% "%~dp0empty.blend"^
  --python "%~dp0licensecheck.py"^

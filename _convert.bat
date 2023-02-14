@@ -55,10 +55,10 @@ echo.
 echo.
 
 IF NOT DEFINED BLENDER goto error-blender
-IF NOT EXIST BLENDER goto error-blender
+IF NOT EXIST %BLENDER% goto error-blender
 IF NOT DEFINED VRM goto error-drop
-IF NOT EXIST VRM goto error-drop
-IF NOT EXIST ADDONFILE goto error-addon
+IF NOT EXIST %VRM% goto error-drop
+IF NOT EXIST "%~dp0VRM_Addon_for_Blender-release.zip" goto error-addon
 
 echo ===Convert Start===
 %BLENDER% "%~dp0empty.blend"^
