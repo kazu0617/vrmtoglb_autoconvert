@@ -4,7 +4,7 @@
 
 **NeosVRでインポートするためにこのツールにたどり着いた場合はまずWikiを確認してください。**  
 **このツールを使う前にしてほしいことを一通り載せています。**  
-https://neosvrjp.memo.wiki/d/Avatar_Import_from_Unity
+https://neosvrjp.memo.wiki/d/VROID
 
 ## これなに
 
