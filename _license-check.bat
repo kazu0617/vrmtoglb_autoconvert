@@ -18,7 +18,7 @@ curl -L -o "%~dp0VRM_Addon_for_Blender-release.zip" https://github.com/saturday0
 
 if "%blender%" == "" (
 echo "Blenderが検出できませんでした。インストーラをダウンロードし、インストールします"
-curl -L -o "%~dp0Blender.msi" https://mirrors.aliyun.com/blender/release/Blender3.2/blender-3.2.2-windows-x64.msi
+curl -L -o "%~dp0Blender.msi" https://mirrors.aliyun.com/blender/release/Blender3.6/blender-3.6.4-windows-x64.msi
 Blender.msi
 goto first
 )
