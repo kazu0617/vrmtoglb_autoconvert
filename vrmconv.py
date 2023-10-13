@@ -17,24 +17,23 @@ def mtoon_to_bsdf():
         main_texture = None
         normalmap_texture = None
         emission_texture = None
-        material_output = None
         mtoon = None
         
         for node in nodes:
-            if node.label == 'MainTexture':
+            if node.label == 'Lit Color Texture':
                 main_texture = node
-            if node.label == 'NormalmapTexture':
+            if node.label == 'Normal Map Texture':
                 normalmap_texture = node
-            if node.label == 'Emission_Texture':
+            if node.label == 'Emissive Texture':
                 emission_texture = node
-            if node.name == 'Material Output':
-                material_output = node
-            if node.name == 'Group' or 'グループ':
+            if node.name == 'Mtoon1Material.Mtoon1Output':
                 mtoon = node
 
         if (not main_texture == None and
-            not material_output == None and
             not mtoon == None):
+
+            material_output = nodes.new(type='ShaderNodeOutputMaterial')
+            normal = nodes.new(type='ShaderNodeNormalMap')
 
             bsdf = nodes.new(type='ShaderNodeBsdfPrincipled')
             bsdf.location = mtoon.location
@@ -45,7 +44,8 @@ def mtoon_to_bsdf():
             links.new(bsdf.outputs['BSDF'], material_output.inputs['Surface'])
 
             if(not normalmap_texture == None):
-                links.new(normalmap_texture.outputs['Color'], bsdf.inputs['Normal'])
+                links.new(normalmap_texture.outputs['Color'], normal.inputs['Color'])
+                links.new(normal.outputs['Normal'], bsdf.inputs['Normal'])
             if(not emission_texture == None):
                 links.new(emission_texture.outputs['Color'], bsdf.inputs['Emission'])
 
