@@ -6,6 +6,7 @@ import os
 import argparse
 
 def mtoon_to_bsdf():
+    bpy.ops.object.mode_set(mode='OBJECT')
     materials = bpy.data.materials
     for material in materials:
         if not material.use_nodes :
@@ -50,6 +51,7 @@ def mtoon_to_bsdf():
                 links.new(emission_texture.outputs['Color'], bsdf.inputs['Emission'])
 
 def remove_trashes():
+    bpy.ops.object.mode_set(mode='OBJECT')
     if 'Colliders' in bpy.data.collections:
         colliders_collection = bpy.data.collections['Colliders']
         objects = colliders_collection.objects
@@ -61,6 +63,7 @@ def remove_trashes():
         bpy.data.objects.remove(bpy.data.objects['secondary'])
 
 def remove_root_bone():
+    bpy.ops.object.mode_set(mode='OBJECT')
     bpy.context.view_layer.objects.active = bpy.data.objects[bpy.data.armatures[0].name]
     bpy.ops.object.mode_set(mode='EDIT')
     armature = bpy.data.armatures[0]
@@ -77,6 +80,7 @@ def remove_root_bone():
     bpy.ops.object.mode_set(mode='OBJECT')
 
 def rename_bones():
+    bpy.ops.object.mode_set(mode='OBJECT')
     prefixes = ['J_Adj_', 'J_Bip_C_', 'J_Bip_', 'J_Sec_C_', 'J_Sec_']
     bones = bpy.data.armatures[0].bones
     
@@ -97,6 +101,7 @@ def rename_bones():
         upper_chest.name = '<NoIK>' + upper_chest.name
 
 def get_cecil_type():
+    bpy.ops.object.mode_set(mode='OBJECT')
     if 'CMeMatome' in bpy.data.objects:
         return 'CMeMatome' # New Cecil Henshin formats (Pokudeki/Avatar Shop)
     if 'CMe' in bpy.data.objects:
@@ -105,6 +110,7 @@ def get_cecil_type():
         return ""
 
 def fix_cecil_eyes():
+    bpy.ops.object.mode_set(mode='OBJECT')
     cecil_type = get_cecil_type()
     if cecil_type != "":
         obj = bpy.data.objects[cecil_type]
@@ -131,11 +137,30 @@ if '__main__' == __name__:
     bpy.ops.preferences.addon_enable(module="VRM_Addon_for_Blender-release")
     bpy.ops.import_scene.vrm(filepath=input, extract_textures_into_folder=True)
 
-    remove_trashes()
-    rename_bones()
-    remove_root_bone()
-    mtoon_to_bsdf()
-    fix_cecil_eyes()
+    try:
+        remove_trashes()
+    except Exception as e:
+        print(e)
+
+    try:
+        rename_bones()
+    except Exception as e:
+        print(e)
+
+    try:
+        remove_root_bone()
+    except Exception as e:
+        print(e)
+
+    try:
+        mtoon_to_bsdf()
+    except Exception as e:
+        print(e)
+
+    try:
+        fix_cecil_eyes()
+    except Exception as e:
+        print(e)
 
     if fbx:
         bpy.ops.export_scene.fbx(filepath=output, embed_textures=True, path_mode='COPY', object_types={'ARMATURE', 'MESH'}, global_scale=0.01)
