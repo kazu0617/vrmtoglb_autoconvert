@@ -18,6 +18,7 @@ def mtoon_to_bsdf():
         main_texture = None
         normalmap_texture = None
         emission_texture = None
+        emission_strength = 0.0
         mtoon = None
         
         for node in nodes:
@@ -29,6 +30,7 @@ def mtoon_to_bsdf():
                 emission_texture = node
             if node.name == 'Mtoon1Material.Mtoon1Output':
                 mtoon = node
+                emission_strength = mtoon.inputs['Emissive Strength'].default_value
 
         if (not main_texture == None and
             not mtoon == None):
@@ -48,7 +50,8 @@ def mtoon_to_bsdf():
                 links.new(normalmap_texture.outputs['Color'], normal.inputs['Color'])
                 links.new(normal.outputs['Normal'], bsdf.inputs['Normal'])
             if(not emission_texture == None):
-                links.new(emission_texture.outputs['Color'], bsdf.inputs['Emission'])
+                links.new(emission_texture.outputs['Color'], bsdf.inputs['Emission Color'])
+                bsdf.inputs['Emission Strength'].default_value = emission_strength
 
 def remove_trashes():
     bpy.ops.object.mode_set(mode='OBJECT')
