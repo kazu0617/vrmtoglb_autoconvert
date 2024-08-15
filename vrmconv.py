@@ -140,6 +140,8 @@ if '__main__' == __name__:
     bpy.ops.preferences.addon_enable(module="VRM_Addon_for_Blender-release")
     bpy.ops.import_scene.vrm(filepath=input, extract_textures_into_folder=True)
 
+    bpy.context.view_layer.objects.active = bpy.data.objects[bpy.data.armatures[0].name]
+
     try:
         remove_trashes()
     except Exception as e:
