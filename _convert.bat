@@ -101,7 +101,7 @@ if not exist %OUTPUT% (
 
 echo "変換が完了しファイルが生成されました"
 echo.
-echo "Neosにインポートするファイル・フォルダは以下の二つです"
+echo "Resoniteにインポートするファイル・フォルダは以下の二つです"
 echo.
 echo %OUTPUT%
 echo %~dp1% "に生成された.texturesフォルダ"
@@ -109,7 +109,7 @@ echo.
 echo.
 echo "フォルダの方はテクスチャが正常に紐つかない場合に使用していただき"
 echo "テクスチャがglbファイルインポート時にそのまま紐ついた場合は[x]マークで削除してください"
-echo "詳しくは[NeosVR日本語非公式Wiki]をご確認ください"
+echo.
 echo.
 echo.
 echo.

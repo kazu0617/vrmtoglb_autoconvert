@@ -1,8 +1,8 @@
-# VRM to GLB for Neos
+# VRM to GLB for Resonite
 
 ## 注意点
 
-NeosVRでインポートするためにこのツールにたどり着いた場合は、まず以下の項目を試してみてください。
+Resoniteでインポートするためにこのツールにたどり着いた場合は、まず以下の項目を試してみてください。
 
 1. vrm -> glbへの拡張子を変更してのインポート
   - 現在のUniVRMの最新版でgltf互換としてvrmが出力されている場合(最新のUniVRMから出力されている場合はたいていそうです)  
@@ -11,16 +11,13 @@ NeosVRでインポートするためにこのツールにたどり着いた場�
   - 最新版のUniVRMを用いてgltf互換としてvrmが出力されていない場合、この操作を行うことで改善されることがあります。  
 **Unityのインストール、UnityのパーソナルLicenseが必要です**。
 
-詳しくは以下のWikiにまとめております。わからない方がいれば以下のWikiを確認してください。  
-https://neosvrjp.memo.wiki/d/VROID
-
 こちらのツールはサポートを続けますが、上の操作を行っても改善されない場合、  
 もしくは難しい・時間がない(特に2)場合はこのツールを試してみてもらえるとありがたいです。
 
 ## これなに
 
-VRMをNeosVRでインポートしやすくするようにGLBへと変換するツールです。  
-NeosVR以外でも利用していただけます。
+VRMをResoniteでインポートしやすくするようにGLBへと変換するツールです。  
+Resonite以外でも利用していただけます。
 Blenderに [VRM_Addon_for_Blender](https://vrm-addon-for-blender.info/) (iCyP様, saturday06様制作)を自動で導入し、いい感じに値を調整しGLBで出力します。
 
 ## 前提ツール
@@ -50,7 +47,7 @@ Blenderはversion3.0以降でのみ動作します(厳密には2.93 LTSまで動
 
 ## 備考
 
-- Neosのインポート時の単位(「自動スケール」とかのやつ)は「メートル(m)」
+- Resoniteのインポート時の単位(「自動スケール」とかのやつ)は「メートル(m)」
 - ライセンスチェックで引っかかったアバターは本当に入れて大丈夫か目視で確認してください
 - 複数ファイルも動きます。まとめてD&Dしてください
 - エラーチェックは随時行っています。GitHubのIssueに直接書いてもらうか、下の二人まで連絡お願いします
@@ -60,12 +57,12 @@ Blenderはversion3.0以降でのみ動作します(厳密には2.93 LTSまで動
 ## 連絡先(Pythonスクリプト)
 
 - Twitter: @lill_azk  
-- Neos: lill
+- Resonite: lill
 
 ## 改変連絡先(Batchスクリプト)
 
 - Twitter: @Gameofthebest
-- Neos: kazu
+- Resonite: kazu
 
 ## ライセンスについて
 
