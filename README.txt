@@ -1,7 +1,7 @@
-# VRM to GLB for Neos
+# VRM to GLB for Resonite
 
 【これなに】
-VRMをNeosVRでインポートしやすいように変換するツールです。  
+VRMをResoniteでインポートしやすいように変換するツールです。  
 Blenderに VRM_Addon_for_Blender: https://vrm-addon-for-blender.info/ (iCyP様, saturday06様制作)を自動で導入し、いい感じに値を調整しGLBで出力します。
 
 【前提ツール】
@@ -21,7 +21,7 @@ Blenderはversion3.0以降でのみ動作します(厳密には2.93 LTSまで動
 
 
 【備考】
-・Neosのインポート時の単位(「自動スケール」とかのやつ)は「メートル(m)」
+・Resoniteのインポート時の単位(「自動スケール」とかのやつ)は「メートル(m)」
 ・ライセンスチェックで引っかかったアバターは本当に入れて大丈夫か目視で確認する必要があるのでスクリプトでは動きません
 ・複数ファイルも動きます。まとめてD&Dしてください
 ・エラーチェックは随時行っています。GitHubのIssueに直接書いてもらうか、下の二人まで連絡お願いします
@@ -29,11 +29,11 @@ Blenderはversion3.0以降でのみ動作します(厳密には2.93 LTSまで動
 
 【連絡先(Pythonスクリプト)】
 ・Twitter: @lill_azk  
-・Neos: lill
+・Resonite: lill
 
 【改変連絡先(Batchスクリプト)】
 ・Twitter: @Gameofthebest
-・Neos: kazu
+・Resonite: kazu
 
 【ライセンスについて】
 MIT。そのうちMPLにするかも。
