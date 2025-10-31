@@ -3,8 +3,8 @@ chcp 65001
 setlocal enabledelayedexpansion
 :first
 
-set BLENDER_USER_CONFIG=%~dp0%\VRMConvert
-set BLENDER_USER_SCRIPTS=%~dp0%\VRMConvert
+set BLENDER_USER_CONFIG=%~dp0%\scripts\VRMConvert
+set BLENDER_USER_SCRIPTS=%~dp0%\scripts\VRMConvert
 for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).DisplayVersion"`) do set version=%%A
 for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).InstallLocation"`) do set blender=%%A
 set blender=%blender:"=%
@@ -14,8 +14,8 @@ if defined BLENDER_LOCATION_OVERRIDE (set blender=%BLENDER_LOCATION_OVERRIDE%)
 for /f "usebackq delims=" %%A in (`curl --version`) do set curlresult=%%A
 for /f "usebackq delims=" %%A in (`ver`) do set windowsversion=%%A
 
-if exist "%~dp0VRM_Addon_for_Blender-release.zip" set blender-addon=true
-if not exist "%~dp0VRM_Addon_for_Blender-release.zip" set blender-addon=false
+if exist "%~dp0scripts\VRM_Addon_for_Blender-release.zip" set blender-addon=true
+if not exist "%~dp0scripts\VRM_Addon_for_Blender-release.zip" set blender-addon=false
 
 echo.
 echo ===Enviroment Checker===
@@ -28,7 +28,7 @@ echo BlenderAddonInstalled: %blender-addon%
 timeout 3
 
 echo "VRMアドオンの最新版を取得中…"
-curl -L -o "%~dp0VRM_Addon_for_Blender-release.zip" https://github.com/saturday06/VRM_Addon_for_Blender/raw/release-archive/VRM_Addon_for_Blender-release.zip
+curl -L -o "%~dp0scripts\VRM_Addon_for_Blender-release.zip" https://github.com/saturday06/VRM_Addon_for_Blender/raw/release-archive/VRM_Addon_for_Blender-release.zip
 
 if "%blender%" == "" (
 echo "Blenderが検出できませんでした。インストーラをダウンロードし、インストールします"
@@ -50,7 +50,7 @@ echo ===Convert Files Checker===
 echo BLENDER = %BLENDER%
 echo VRM = %VRM%
 echo OUTPUT = %OUTPUT%
-echo ADDONFILE = "%~dp0VRM_Addon_for_Blender-release.zip"
+echo ADDONFILE = "%~dp0scripts\VRM_Addon_for_Blender-release.zip"
 echo.
 echo.
 
@@ -58,15 +58,15 @@ IF NOT DEFINED BLENDER goto error-blender
 IF NOT EXIST %BLENDER% goto error-blender
 IF NOT DEFINED VRM goto error-drop
 IF NOT EXIST %VRM% goto error-drop
-IF NOT EXIST "%~dp0VRM_Addon_for_Blender-release.zip" goto error-addon
+IF NOT EXIST "%~dp0scripts\VRM_Addon_for_Blender-release.zip" goto error-addon
 
 echo ===Convert Start===
-%BLENDER% "%~dp0empty.blend"^
- --python "%~dp0vrmconv.py"^
+%BLENDER% "%~dp0scripts\empty.blend"^
+ --python "%~dp0scripts\vrmconv.py"^
  --background^
  -- --input %VRM%^
  --output %OUTPUT%^
- --addonfile "%~dp0VRM_Addon_for_Blender-release.zip"
+ --addonfile "%~dp0scripts\VRM_Addon_for_Blender-release.zip"
 echo ===Convert End===
 echo.
 echo.
