@@ -136,8 +136,12 @@ if '__main__' == __name__:
     fbx = args.fbx
     addonfile = args.addonfile
 
-    bpy.ops.preferences.addon_install(filepath=addonfile, overwrite = True)
-    bpy.ops.preferences.addon_enable(module="VRM_Addon_for_Blender-release")
+    if addonfile:
+        # Legacy addon installation (Blender < 4.2)
+        bpy.ops.preferences.addon_install(filepath=addonfile, overwrite = True)
+        bpy.ops.preferences.addon_enable(module="VRM_Addon_for_Blender-release")
+    # else: Extension mode (Blender 4.2+) - extension is pre-installed via CLI
+
     bpy.ops.import_scene.vrm(filepath=input, extract_textures_into_folder=True)
 
     bpy.context.view_layer.objects.active = bpy.data.objects[bpy.data.armatures[0].name]
