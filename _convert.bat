@@ -5,8 +5,8 @@ setlocal enabledelayedexpansion
 
 set "BLENDER_USER_CONFIG=%~dp0%\scripts\VRMConvert"
 set "BLENDER_USER_SCRIPTS=%~dp0%\scripts\VRMConvert"
-for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).DisplayVersion"`) do set "version=%%A"
-for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).InstallLocation"`) do set "blender=%%A"
+for /f "usebackq delims=" %%A in (`powershell -NoProfile -Command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).DisplayVersion"`) do set "version=%%A"
+for /f "usebackq delims=" %%A in (`powershell -NoProfile -Command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).InstallLocation"`) do set "blender=%%A"
 set "blender=%blender:"=%"
 
 if defined BLENDER_LOCATION_OVERRIDE (
@@ -16,6 +16,8 @@ if defined BLENDER_LOCATION_OVERRIDE (
 set "blender=%blender:"=%"
 
 rem Fallback: レジストリからバージョンを取得できない場合(Steam版等)、blender.exeから直接取得
+echo %version% | findstr /r "^[0-9][0-9]*\." >nul || set "version="
+
 if "%version%" == "" if defined blender (
     echo "レジストリからBlenderバージョンを検出できませんでした。blender.exeから直接取得します…"
     set "blender_for_version=!blender!"
@@ -61,7 +63,7 @@ timeout 3
 
 if "!use_extension!" == "true" (
     echo "Extension版VRMアドオンの最新版を取得中…"
-    for /f "usebackq delims=" %%A in (`powershell -command "try { $r = Invoke-RestMethod -Uri 'https://api.github.com/repos/saturday06/VRM_Addon_for_Blender/releases/latest'; ($r.assets | Where-Object { $_.name -like '*Extension*' } | Select-Object -First 1).browser_download_url } catch { Write-Output '' }"`) do set extension_url=%%A
+    for /f "usebackq delims=" %%A in (`powershell -NoProfile -Command "try { $r = Invoke-RestMethod -Uri 'https://api.github.com/repos/saturday06/VRM_Addon_for_Blender/releases/latest'; ($r.assets | Where-Object { $_.name -like '*Extension*' } | Select-Object -First 1).browser_download_url } catch { Write-Output '' }"`) do set extension_url=%%A
     if defined extension_url (
         curl -L -o "%~dp0scripts\VRM_Addon_for_Blender-Extension-release.zip" "!extension_url!"
     ) else (
