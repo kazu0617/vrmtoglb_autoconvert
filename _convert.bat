@@ -19,7 +19,7 @@ rem Fallback: レジストリからバージョンを取得できない場合(St
 echo %version% | findstr /r "^[0-9][0-9]*\." >nul || set "version="
 
 if "%version%" == "" if defined blender (
-    echo "レジストリからBlenderバージョンを検出できませんでした。blender.exeから直接取得します…"
+    echo "レジストリからBlenderバージョンを検出できませんでした。blender.exeから直接取得します..."
     set "blender_for_version=!blender!"
     if /i not "!blender_for_version:~-11!"=="blender.exe" set "blender_for_version=!blender_for_version!\blender.exe"
     for /f "tokens=2 delims= " %%A in ('"!blender_for_version!" --version 2^>nul') do (
@@ -42,6 +42,12 @@ if "!minor!"=="" set minor=0
 if defined major (
     if !major! GEQ 5 set use_extension=true
     if !major! EQU 4 if !minor! GEQ 2 set use_extension=true
+)
+
+if "!use_extension!" == "true" (
+    set "BLENDER_USER_CONFIG=%~dp0%\scripts\VRMConvertExtension"
+    set "BLENDER_USER_SCRIPTS=%~dp0%\scripts\VRMConvertExtension"
+    if not exist "%~dp0scripts\VRMConvertExtension" mkdir "%~dp0scripts\VRMConvertExtension"
 )
 
 if "!use_extension!" == "true" (
