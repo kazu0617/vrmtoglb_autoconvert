@@ -3,23 +3,23 @@ chcp 65001
 setlocal enabledelayedexpansion
 :first
 
-set BLENDER_USER_CONFIG=%~dp0%\scripts\VRMConvert
-set BLENDER_USER_SCRIPTS=%~dp0%\scripts\VRMConvert
-for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).DisplayVersion"`) do set version=%%A
-for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).InstallLocation"`) do set blender=%%A
-set blender=%blender:"=%
+set "BLENDER_USER_CONFIG=%~dp0%\scripts\VRMConvert"
+set "BLENDER_USER_SCRIPTS=%~dp0%\scripts\VRMConvert"
+for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).DisplayVersion"`) do set "version=%%A"
+for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).InstallLocation"`) do set "blender=%%A"
+set "blender=%blender:"=%"
 
 if defined BLENDER_LOCATION_OVERRIDE (
-    set blender=%BLENDER_LOCATION_OVERRIDE%
-    set version=
+    set "blender=%BLENDER_LOCATION_OVERRIDE%"
+    set "version="
 )
-set blender=%blender:"=%
+set "blender=%blender:"=%"
 
 rem Fallback: レジストリからバージョンを取得できない場合(Steam版等)、blender.exeから直接取得
 if "%version%" == "" if defined blender (
     echo "レジストリからBlenderバージョンを検出できませんでした。blender.exeから直接取得します…"
-    set blender_for_version=%blender%
-    if /i not "!blender_for_version:~-11!"=="blender.exe" set blender_for_version=!blender_for_version!\blender.exe
+    set "blender_for_version=!blender!"
+    if /i not "!blender_for_version:~-11!"=="blender.exe" set "blender_for_version=!blender_for_version!\blender.exe"
     for /f "tokens=2 delims= " %%A in ('"!blender_for_version!" --version 2^>nul') do (
         if not defined version set version=%%A
     )
@@ -80,12 +80,11 @@ Blender.msi
 goto first
 )
 if /i "!blender:~-11!"=="blender.exe" (
-    set blender="%blender%"
+    set "blender=!blender!"
 ) else (
-    set blender='%blender%'
-    for /f "usebackq delims=" %%A in (`powershell -command "Join-Path %blender% blender.exe"`) do set blender=%%A
-    set blender="%blender%"
+    set "blender=!blender!\blender.exe"
 )
+set "blender="!blender!""
 
 rem Extension mode: pre-install extension via Blender CLI
 if "!use_extension!" == "true" (
