@@ -8,12 +8,18 @@ for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\
 for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).InstallLocation"`) do set blender=%%A
 set blender=%blender:"=%
 
-if defined BLENDER_LOCATION_OVERRIDE (set blender=%BLENDER_LOCATION_OVERRIDE%)
+if defined BLENDER_LOCATION_OVERRIDE (
+    set blender=%BLENDER_LOCATION_OVERRIDE%
+    set version=
+)
+set blender=%blender:"=%
 
 rem Fallback: レジストリからバージョンを取得できない場合(Steam版等)、blender.exeから直接取得
 if "%version%" == "" if defined blender (
     echo "レジストリからBlenderバージョンを検出できませんでした。blender.exeから直接取得します…"
-    for /f "tokens=2 delims= " %%A in ('"%blender%\blender.exe" --version 2^>nul') do (
+    set blender_for_version=%blender%
+    if /i not "!blender_for_version:~-11!"=="blender.exe" set blender_for_version=!blender_for_version!\blender.exe
+    for /f "tokens=2 delims= " %%A in ('"!blender_for_version!" --version 2^>nul') do (
         if not defined version set version=%%A
     )
 )
@@ -23,10 +29,13 @@ for /f "usebackq delims=" %%A in (`ver`) do set windowsversion=%%A
 
 rem Blender 4.2以上ではExtensionシステムを使用
 set use_extension=false
+set major=0
+set minor=0
 for /f "tokens=1,2 delims=." %%a in ("%version%") do (
     set major=%%a
     set minor=%%b
 )
+if "!minor!"=="" set minor=0
 if defined major (
     if !major! GEQ 5 set use_extension=true
     if !major! EQU 4 if !minor! GEQ 2 set use_extension=true
@@ -52,7 +61,7 @@ timeout 3
 
 if "!use_extension!" == "true" (
     echo "Extension版VRMアドオンの最新版を取得中…"
-    for /f "usebackq delims=" %%A in (`powershell -command "try { $r = Invoke-RestMethod -Uri 'https://api.github.com/repos/saturday06/VRM-Addon-for-Blender/releases/latest'; ($r.assets | Where-Object { $_.name -like '*Extension*' } | Select-Object -First 1).browser_download_url } catch { Write-Output '' }"`) do set extension_url=%%A
+    for /f "usebackq delims=" %%A in (`powershell -command "try { $r = Invoke-RestMethod -Uri 'https://api.github.com/repos/saturday06/VRM_Addon_for_Blender/releases/latest'; ($r.assets | Where-Object { $_.name -like '*Extension*' } | Select-Object -First 1).browser_download_url } catch { Write-Output '' }"`) do set extension_url=%%A
     if defined extension_url (
         curl -L -o "%~dp0scripts\VRM_Addon_for_Blender-Extension-release.zip" "!extension_url!"
     ) else (
@@ -70,15 +79,19 @@ curl -L -o "%~dp0Blender.msi" https://mirrors.aliyun.com/blender/release/Blender
 Blender.msi
 goto first
 )
-set blender='%blender%'
-
-for /f "usebackq delims=" %%A in (`powershell -command "Join-Path %blender% blender.exe"`) do set blender=%%A
-set blender="%blender%"
+if /i "!blender:~-11!"=="blender.exe" (
+    set blender="%blender%"
+) else (
+    set blender='%blender%'
+    for /f "usebackq delims=" %%A in (`powershell -command "Join-Path %blender% blender.exe"`) do set blender=%%A
+    set blender="%blender%"
+)
 
 rem Extension mode: pre-install extension via Blender CLI
 if "!use_extension!" == "true" (
     echo "VRM Extensionをインストール中…"
     %blender% --command extension install-file "%~dp0scripts\VRM_Addon_for_Blender-Extension-release.zip" -r user_default -e
+    if errorlevel 1 goto error-addon
 )
 
 set VRM=%1
