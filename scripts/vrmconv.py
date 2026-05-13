@@ -174,4 +174,8 @@ if '__main__' == __name__:
     if fbx:
         bpy.ops.export_scene.fbx(filepath=output, embed_textures=True, path_mode='COPY', object_types={'ARMATURE', 'MESH'}, global_scale=0.01)
     else:
-        bpy.ops.export_scene.gltf(filepath=output)
+        bpy.ops.export_scene.gltf(
+            filepath=output,
+            export_try_sparse_sk=False,
+            export_try_omit_sparse_sk=False,
+        )

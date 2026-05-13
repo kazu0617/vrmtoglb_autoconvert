@@ -8,7 +8,7 @@ for /f "usebackq delims=" %%A in (`powershell -NoProfile -command "(Get-ItemProp
 for /f "usebackq delims=" %%A in (`powershell -NoProfile -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).InstallLocation"`) do set blender=%%A
 set blender=%blender:"=%
 
-if defined BLENDER_LOCATION_OVERRIDE (set blender=%BLENDER_LOCATION_OVERRIDE%)
+if defined BLENDER_LOCATION_OVERRIDE (set "blender=%BLENDER_LOCATION_OVERRIDE%")
 
 rem Fallback: レジストリからバージョンを取得できない場合(Steam版等)、blender.exeから直接取得
 if "%version%" == "" if defined blender (
