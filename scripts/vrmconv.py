@@ -127,20 +127,12 @@ if '__main__' == __name__:
     parser.add_argument('--input', required=True)
     parser.add_argument('--output', required=True)
     parser.add_argument('--fbx', required=False)
-    parser.add_argument('--addonfile', required=False)
     
     args = parser.parse_args(sys.argv[sys.argv.index('--') + 1:])
     
     input = args.input
     output = args.output
     fbx = args.fbx
-    addonfile = args.addonfile
-
-    if addonfile:
-        # Legacy addon installation (Blender < 4.2)
-        bpy.ops.preferences.addon_install(filepath=addonfile, overwrite = True)
-        bpy.ops.preferences.addon_enable(module="VRM_Addon_for_Blender-release")
-    # else: Extension mode (Blender 4.2+) - extension is pre-installed via CLI
 
     bpy.ops.import_scene.vrm(filepath=input, extract_textures_into_folder=True)
 

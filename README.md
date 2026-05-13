@@ -23,8 +23,8 @@ Blenderに [VRM_Addon_for_Blender](https://vrm-addon-for-blender.info/) (iCyP様
 ## 前提ツール
 
 Blenderだけ入れてればOK。  
-Blenderはversion3.0以降でのみ動作します(厳密には2.93 LTSまで動作確認していますが、今から導入する場合は3系をお勧めします)  
-もしまだ入れていない方はこちらからどうぞ: [Blender公式サイト](https://www.blender.org/download/release/Blender3.4/blender-3.4.1-windows-x64.msi/)
+Blenderはversion4.2以降でのみ動作します。4.2 LTS以降のBlenderを利用してください。
+もしまだ入れていない方はこちらからどうぞ: [Blender公式サイト](https://www.blender.org/download/)
 
 ## ダウンロード
 
