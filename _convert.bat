@@ -30,7 +30,7 @@ for /f "tokens=1,2 delims=." %%a in ("%version%") do (
 )
 if defined major (
     if !major! GEQ 5 set use_extension=true
-    if !major! EQU 4 if !minor! GEQ 2 set use_extension=true
+    if !major! EQU 4 if defined minor if !minor! GEQ 2 set use_extension=true
 )
 
 if "!use_extension!" == "true" (
@@ -52,7 +52,7 @@ timeout 3
 
 if "!use_extension!" == "true" (
     echo "Extension版VRMアドオンの最新版を取得中…"
-    for /f "usebackq delims=" %%A in (`powershell -NoProfile -command "try { $r = Invoke-RestMethod -Uri 'https://api.github.com/repos/saturday06/VRM-Addon-for-Blender/releases/latest'; ($r.assets | Where-Object { $_.name -like '*Extension*' } | Select-Object -First 1).browser_download_url } catch { Write-Output '' }"`) do set extension_url=%%A
+    for /f "usebackq delims=" %%A in (`powershell -NoProfile -command "try { $r = Invoke-RestMethod -Uri 'https://api.github.com/repos/saturday06/VRM_Addon_for_Blender/releases/latest'; ($r.assets | Where-Object { $_.name -like '*Extension*' } | Select-Object -First 1).browser_download_url } catch { Write-Output '' }"`) do set extension_url=%%A
     if defined extension_url (
         curl -L -o "%~dp0scripts\VRM_Addon_for_Blender-Extension-release.zip" "!extension_url!"
     ) else (
