@@ -5,8 +5,8 @@ setlocal enabledelayedexpansion
 
 set BLENDER_USER_CONFIG=%~dp0%\scripts\VRMConvert
 set BLENDER_USER_SCRIPTS=%~dp0%\scripts\VRMConvert
-for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).DisplayVersion"`) do set version=%%A
-for /f "usebackq delims=" %%A in (`powershell -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).InstallLocation"`) do set blender=%%A
+for /f "usebackq delims=" %%A in (`powershell -NoProfile -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).DisplayVersion"`) do set version=%%A
+for /f "usebackq delims=" %%A in (`powershell -NoProfile -command "(Get-ItemProperty HKLM:\Software\\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName,DisplayVersion,InstallLocation | Where-Object {$_.DisplayName -eq \"Blender\"} | Sort -Property DisplayVersion | Select-Object -Last 1 ).InstallLocation"`) do set blender=%%A
 set blender=%blender:"=%
 
 if defined BLENDER_LOCATION_OVERRIDE (set blender=%BLENDER_LOCATION_OVERRIDE%)
@@ -52,7 +52,7 @@ timeout 3
 
 if "!use_extension!" == "true" (
     echo "Extension版VRMアドオンの最新版を取得中…"
-    for /f "usebackq delims=" %%A in (`powershell -command "try { $r = Invoke-RestMethod -Uri 'https://api.github.com/repos/saturday06/VRM-Addon-for-Blender/releases/latest'; ($r.assets | Where-Object { $_.name -like '*Extension*' } | Select-Object -First 1).browser_download_url } catch { Write-Output '' }"`) do set extension_url=%%A
+    for /f "usebackq delims=" %%A in (`powershell -NoProfile -command "try { $r = Invoke-RestMethod -Uri 'https://api.github.com/repos/saturday06/VRM-Addon-for-Blender/releases/latest'; ($r.assets | Where-Object { $_.name -like '*Extension*' } | Select-Object -First 1).browser_download_url } catch { Write-Output '' }"`) do set extension_url=%%A
     if defined extension_url (
         curl -L -o "%~dp0scripts\VRM_Addon_for_Blender-Extension-release.zip" "!extension_url!"
     ) else (
@@ -72,7 +72,7 @@ goto first
 )
 set blender='%blender%'
 
-for /f "usebackq delims=" %%A in (`powershell -command "Join-Path %blender% blender.exe"`) do set blender=%%A
+for /f "usebackq delims=" %%A in (`powershell -NoProfile -command "Join-Path %blender% blender.exe"`) do set blender=%%A
 set blender="%blender%"
 
 rem Extension mode: pre-install extension via Blender CLI
@@ -84,7 +84,13 @@ if "!use_extension!" == "true" (
 :cycle
 
 set VRM=%1
-set OUTPUT="%~1-converted.glb"
+set VRM_PATH=%~1
+if "%VRM_PATH:~0,2%" == "~/" set VRM_PATH=%USERPROFILE%\%VRM_PATH:~2%
+if "%VRM_PATH:~0,2%" == "~\" set VRM_PATH=%USERPROFILE%\%VRM_PATH:~2%
+set VRM_PATH=%VRM_PATH:/=\%
+if not "%VRM_PATH%" == "" set VRM="%VRM_PATH%"
+set OUTPUT="%VRM_PATH%-converted.glb"
+for %%F in ("%VRM_PATH%") do set VRM_DIR=%%~dpF
 
 echo.
 echo ===Convert Files Checker===
@@ -152,7 +158,7 @@ echo.
 echo "Resoniteにインポートするファイル・フォルダは以下の二つです"
 echo.
 echo %OUTPUT%
-echo %~dp1% "に生成された.texturesフォルダ"
+echo %VRM_DIR% "に生成された.texturesフォルダ"
 echo.
 echo.
 echo "フォルダの方はテクスチャが正常に紐つかない場合に使用していただき"
