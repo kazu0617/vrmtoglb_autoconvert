@@ -127,17 +127,13 @@ if '__main__' == __name__:
     parser.add_argument('--input', required=True)
     parser.add_argument('--output', required=True)
     parser.add_argument('--fbx', required=False)
-    parser.add_argument('--addonfile', required=False)
     
     args = parser.parse_args(sys.argv[sys.argv.index('--') + 1:])
     
     input = args.input
     output = args.output
     fbx = args.fbx
-    addonfile = args.addonfile
 
-    bpy.ops.preferences.addon_install(filepath=addonfile, overwrite = True)
-    bpy.ops.preferences.addon_enable(module="VRM_Addon_for_Blender-release")
     bpy.ops.import_scene.vrm(filepath=input, extract_textures_into_folder=True)
 
     bpy.context.view_layer.objects.active = bpy.data.objects[bpy.data.armatures[0].name]
@@ -170,4 +166,8 @@ if '__main__' == __name__:
     if fbx:
         bpy.ops.export_scene.fbx(filepath=output, embed_textures=True, path_mode='COPY', object_types={'ARMATURE', 'MESH'}, global_scale=0.01)
     else:
-        bpy.ops.export_scene.gltf(filepath=output)
+        bpy.ops.export_scene.gltf(
+            filepath=output,
+            export_try_sparse_sk=False,
+            export_try_omit_sparse_sk=False,
+        )
