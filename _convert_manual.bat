@@ -25,7 +25,6 @@ for /f "usebackq delims=" %%A in (`curl --version`) do set curlresult=%%A
 for /f "usebackq delims=" %%A in (`ver`) do set windowsversion=%%A
 
 rem Blender 4.2以上のみ対応し、Extensionシステムを使用
-set use_extension=false
 set supported_blender=false
 for /f "tokens=1,2 delims=." %%a in ("%version%") do (
     set major=%%a
@@ -33,33 +32,22 @@ for /f "tokens=1,2 delims=." %%a in ("%version%") do (
 )
 if defined major (
     if !major! GEQ 5 (
-        set use_extension=true
         set supported_blender=true
     )
     if !major! EQU 4 if defined minor if !minor! GEQ 2 (
-        set use_extension=true
         set supported_blender=true
     )
 )
-if exist "%~dp0scripts\VRM_Addon_for_Blender-Extension-release.zip" (set blender-addon=true) else (set blender-addon=false)
-
-echo ===Enviroment Checker. if alert to send from Dev, send it!===
+echo.
+echo ===Enviroment Checker===
 echo BlenderVersion: %version%
 echo BlenderInstallLocation: %blender%
 echo CurlResult: %curlresult%
 echo WindowsVersion: %windowsversion%
-echo BlenderAddonInstalled: !blender-addon!
-echo UseExtension: !use_extension!
-echo ===Enviroment Checker. if alert to send from Dev, send it!===
 
 timeout 3
 
-
-if "%blender%" == "" (
-    echo "Blenderが検出できませんでした。インストールしているか、BLENDER_LOCATION_OVERRIDE環境変数で場所を指定しているか確認してください。"
-    echo "Blender公式サイト: https://www.blender.org/download/"
-    goto error-blender
-)
+if "%blender%" == "" goto error-blender
 if "!supported_blender!" == "false" goto error-blender-version
 
 echo "Extension版VRMアドオンの最新版を取得中…"
@@ -76,10 +64,8 @@ for /f "usebackq delims=" %%A in (`powershell -NoProfile -command "Join-Path %bl
 set blender="%blender%"
 
 rem Extension mode: pre-install extension via Blender CLI
-if "!use_extension!" == "true" (
-    echo "VRM Extensionをインストール中…"
-    %blender% --command extension install-file "%~dp0scripts\VRM_Addon_for_Blender-Extension-release.zip" -r user_default -e
-)
+echo "VRM Extensionをインストール中…"
+%blender% --command extension install-file "%~dp0scripts\VRM_Addon_for_Blender-Extension-release.zip" -r user_default -e
 
 set VRM=%1
 set VRM_PATH=%~1
@@ -89,10 +75,14 @@ set VRM_PATH=%VRM_PATH:/=\%
 if not "%VRM_PATH%" == "" set VRM="%VRM_PATH%"
 set OUTPUT="%VRM_PATH%-converted.glb"
 
+echo.
+echo ===Convert Files Checker===
 echo BLENDER = %BLENDER%
 echo VRM = %VRM%
 echo OUTPUT = %OUTPUT%
-echo ADDONFILE = Extension mode
+echo EXTENSIONFILE = "%~dp0scripts\VRM_Addon_for_Blender-Extension-release.zip"
+echo.
+echo.
 
 IF NOT DEFINED BLENDER goto error-blender
 IF NOT EXIST %BLENDER% goto error-blender
@@ -100,8 +90,11 @@ IF NOT DEFINED VRM goto error-drop
 IF NOT EXIST %VRM% goto error-drop
 IF NOT EXIST "%~dp0scripts\VRM_Addon_for_Blender-Extension-release.zip" goto error-addon
 
+echo ===Convert Start===
 %BLENDER% "%~dp0scripts\empty.blend" --python "%~dp0scripts\vrmconv.py" -- --input %VRM% --output %OUTPUT%
-rem --fbx True
+echo ===Convert End===
+echo.
+echo.
 goto end
 
 :error-blender
@@ -109,6 +102,7 @@ echo "Blenderを標準のインストール位置から変更しているか、�
 echo "標準のインストール位置から変更している場合はblender.exeまでのパスが通っているか確認してください(フォルダ名まで検索した後は手動で処理しています)"
 echo "Blenderのインストール場所を手動で指定する場合は BLENDER_LOCATION_OVERRIDE 環境変数にblender.exeが入っているディレクトリを指定してください"
 echo "インストールしていない場合はBlender4.2以上をインストールお願いします"
+echo "Blender公式サイト: https://www.blender.org/download/"
 echo "何かキーをクリックすると終了します"
 pause
 goto end
